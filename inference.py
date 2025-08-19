@@ -1,6 +1,6 @@
 import torch
 from utils.dataset import Speech2Text, speech_collate_fn
-from models import Transformer
+from models import VGGTransformer
 from tqdm import tqdm
 import argparse
 import yaml
@@ -13,13 +13,13 @@ def load_config(config_path: str) -> dict:
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
 
-def load_model(config: dict, vocab_len: int, device: torch.device, epoch : int) -> Transformer:
+def load_model(config: dict, vocab_len: int, device: torch.device, epoch : int) -> VGGTransformer:
     checkpoint_path = os.path.join(
         config['training']['save_path'],
         f"{config['model']['model_name']}_epoch_{epoch}"
     )
     print(f"Loading checkpoint from: {checkpoint_path}")
-    model = Transformer(
+    model = VGGTransformer(
         config = config['model'],
         vocab_size=vocab_len
     ).to(device)
@@ -92,7 +92,7 @@ def main():
     predictor = GreedyPredictor(model, train_dataset.vocab, device)
     all_gold_texts = []
     all_predicted_texts = []
-    result_path = 'workspace/TASA/result.txt'
+    result_path = config['training']['result']
     with open(result_path, "w", encoding="utf-8") as f_out:
         with torch.no_grad():
             for batch in tqdm(test_loader, desc="Testing"):

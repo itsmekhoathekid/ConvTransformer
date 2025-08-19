@@ -1,14 +1,15 @@
 training:
   epochs: 100
-  batch_size: 2
-  save_path: "/home/anhkhoa/ConvTransformer/saves"
-  train_path : "/home/anhkhoa/transformer_transducer_speeQ/data/train.json"
-  dev_path : "/home/anhkhoa/transformer_transducer_speeQ/data/dev.json"
-  test_path : "/home/anhkhoa/transformer_transducer_speeQ/data/dev.json"
-  vocab_path : "/home/anhkhoa/transformer_transducer_speeQ/data/vocab.json"
+  batch_size: 16
+  save_path: "workspace/ConvTransformer/saves"
+  train_path : "workspace/dataset/train_w2i.json"
+  dev_path : "workspace/dataset/test_w2i.json"
+  test_path : "workspace/dataset/test_w2i.json"
+  vocab_path : "workspace/dataset/vocab_w2i.json"
   reload: False
-  logg : "/home/anhkhoa/ConvTransformer/logs/VGGTransformer.log"
+  logg : "workspace/ConvTransformer/logs/r_tasa.log"
   ctc_weight: 0.4
+  result: "workspace/ConvTransformer/results.txt"
   
 
 

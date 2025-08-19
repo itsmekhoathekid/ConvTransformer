@@ -13,14 +13,19 @@ from typing import Optional, Callable, Type, List
 
 
 class ConvDecBlock(nn.Module):
-    def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3, dropout: float = 0.1):
+    def __init__(self, in_channels: int, out_channels: int, kernel_size: int = 3, dropout: float = 0.1 ,dilation = 1):
         super().__init__()
-        self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=kernel_size // 2)
+        self.dilation = dilation
+        self.kernel_size = kernel_size
+        self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding= 0 , dilation = dilation)
         self.norm = nn.LayerNorm(out_channels)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
+        left_pad = self.dilation * (self.kernel_size - 1)
+        x = F.pad(x, (left_pad, 0))
+
         x = self.conv(x.float())  # (batch, out_channels, new_seq_len)
         x = x.transpose(1, 2)  # (batch, new_seq_len, out_channels)
         x = self.norm(x)  # (batch, new_seq_len, out_channels)
