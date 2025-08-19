@@ -63,7 +63,7 @@ class VGGTransformerEncoder(nn.Module):
         self.frontend = VGGFrontEnd(
             num_blocks = 2,
             in_channel=1,
-            out_channels=[64 , 128],
+            out_channels=[8, 16],
             conv_kernel_sizes=[3, 3],
             pooling_kernel_sizes=[2, 2],
             num_conv_layers=[2, 2],

@@ -31,9 +31,10 @@ class TransformerDecoderLayer(nn.Module):
 class VGGTransformerDecoder(nn.Module):
     def __init__(self, vocab_size: int, n_layers: int, d_model: int, ff_size: int, h: int, p_dropout: float) -> None:
         super().__init__()
-        self.emb = ConvDec(
+        self.emb = nn.Embedding(vocab_size, d_model)
+        self.enc = ConvDec(
             num_blocks = 1, 
-            in_channels=1,
+            in_channels=d_model,
             out_channels=[d_model],
             kernel_sizes=[3],
             dropout=p_dropout,
@@ -57,6 +58,7 @@ class VGGTransformerDecoder(nn.Module):
             Tensor: The decoded output of shape [B, M, d_model].
         """
         out = self.emb(x)
+        out = self.enc(out)
         # out = self.pe(out)
         for layer in self.layers:
             out = layer(out, encoder_out, enc_mask, dec_mask)

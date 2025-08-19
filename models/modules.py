@@ -45,10 +45,11 @@ class ConvDec(nn.Module):
         self.blocks = nn.ModuleList(blocks)
 
     def forward(self, x):
-        x = x.unsqueeze(1)  # (batch, in, seq)
+        x = x.transpose(1, 2)  # (batch, seq_len, in_channels)
         for block in self.blocks:
             x = block(x)
         x = x.transpose(1, 2)  # (batch, seq_len, out_channels)
+        
         return x
 
 
