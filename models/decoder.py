@@ -33,13 +33,13 @@ class VGGTransformerDecoder(nn.Module):
         super().__init__()
         self.emb = nn.Embedding(vocab_size, d_model)
         self.enc = ConvDec(
-            num_blocks = 1, 
-            in_channels=d_model,
-            out_channels=[d_model],
-            kernel_sizes=[3],
+            num_blocks = 4, 
+            in_channels= d_model ,
+            out_channels=[d_model, d_model, d_model, d_model],
+            kernel_sizes=[3,3,3,3],
             dropout=p_dropout,
         )
-        # self.pe = PositionalEncoding(d_model=d_model) 
+        self.pe = PositionalEncoding(d_model=d_model) 
         self.layers = nn.ModuleList(
             [TransformerDecoderLayer(d_model=d_model, h=h, ff_size=ff_size, dropout=p_dropout) for _ in range(n_layers)]
         )
@@ -58,8 +58,10 @@ class VGGTransformerDecoder(nn.Module):
             Tensor: The decoded output of shape [B, M, d_model].
         """
         out = self.emb(x)
+        # # out = x.unsqueeze(1)
+        # # out = out.transpose(1,2)
         out = self.enc(out)
-        # out = self.pe(out)
+        out = self.pe(out)
         for layer in self.layers:
             out = layer(out, encoder_out, enc_mask, dec_mask)
         out = self.projection(out)

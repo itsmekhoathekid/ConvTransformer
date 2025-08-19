@@ -45,7 +45,7 @@ class VGGTransformerEncoder(nn.Module):
     ):
         super().__init__()
         self.linear = nn.Linear(in_features=in_features, out_features=d_model)
-        # self.pe = PositionalEncoding(d_model)
+        self.pe = PositionalEncoding(d_model)
         
 
         self.layers = nn.ModuleList(
@@ -63,7 +63,7 @@ class VGGTransformerEncoder(nn.Module):
         self.frontend = VGGFrontEnd(
             num_blocks = 2,
             in_channel=1,
-            out_channels=[8, 16],
+            out_channels=[32, 64],
             conv_kernel_sizes=[3, 3],
             pooling_kernel_sizes=[2, 2],
             num_conv_layers=[2, 2],
@@ -86,7 +86,7 @@ class VGGTransformerEncoder(nn.Module):
 
 
         out = self.linear(x)
-        # out = self.pe(out)
+        out = self.pe(out)
         mask_atten = mask.unsqueeze(1).unsqueeze(1)
 
         for layer in self.layers:

@@ -7,7 +7,7 @@ training:
   test_path : "workspace/dataset/test_w2i.json"
   vocab_path : "workspace/dataset/vocab_w2i.json"
   reload: False
-  logg : "workspace/ConvTransformer/logs/r_tasa.log"
+  logg : "workspace/ConvTransformer/logs/VGGTransformer.log"
   ctc_weight: 0.4
   result: "workspace/ConvTransformer/results.txt"
   
@@ -21,11 +21,11 @@ optim:
 
 scheduler:
   lr_initial: 0.001
-  n_warmup_steps: 15000
+  n_warmup_steps: 5000
 
 model:
   input_dim: 80
-  in_features: 320
+  in_features: 1280
   n_enc_layers: 6
   n_dec_layers: 3
   d_model: 256
