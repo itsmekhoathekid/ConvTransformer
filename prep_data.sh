@@ -12,5 +12,5 @@ gdown 1YgTF-NbHuweHWr2LahS_X9j--laGDnIK
 unzip -o voices.zip
 
 cd /
-python workspace/TASA/utils/construct.py
-mkdir workspace/TASA/saves
+python workspace/ConvTransformer/utils/construct.py
+mkdir workspace/ConvTransformer/saves
